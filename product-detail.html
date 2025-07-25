@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Detail - AgriSetu</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0fdf4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    h2 {
+      color: #1b4332;
+    }
+    p {
+      color: #333;
+    }
+    form {
+      margin-top: 20px;
+      background: #d8f3dc;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #2d6a4f;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #40916c;
+    }
+    .total-price {
+      font-size: 1.2rem;
+      color: #1b4332;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    footer {
+      background: #2d6a4f;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      font-weight: bold;
+    }
+
+    /* Payment modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    .modal-content h3 {
+      margin-bottom: 20px;
+      color: #2d6a4f;
+    }
+    .modal-content button {
+      margin-top: 20px;
+      background-color: #1b4332;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="productDetail"></div>
+
+  <!-- Fake Razorpay Payment Modal -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-content">
+      <h3>💳 Complete Payment</h3>
+      <p>Total Amount: ₹<span id="modalAmount">0</span></p>
+      <button onclick="confirmPayment()">Pay Now</button>
+    </div>
+  </div>
+
+  <script>
+    const index = localStorage.getItem("selectedProductIndex");
+    const products = JSON.parse(localStorage.getItem("products") || "[]");
+    const product = products[index];
+    const buyerName = localStorage.getItem("currentBuyerName") || "Guest";
+
+    const detail = document.getElementById("productDetail");
+
+    detail.innerHTML = `
+      <img src="${product.image}" alt="${product.cropName}">
+      <h2>${product.pname}</h2>
+      <p><strong>Seed Variety:</strong> ${product.seed}</p>
+      <p><strong>Price:</strong> ₹${product.price} per unit</p>
+      <p><strong>Quantity Available:</strong> ${product.qty}</p>
+      <p><strong>Description:</strong> ${product.desc}</p>
+      <p><strong>Farmer Name:</strong> ${product.fname}</p>
+      <p><strong>Address:</strong> ${product.address}</p>
+
+      <form id="orderForm">
+        <h3>🛒 Place Order</h3>
+        <input type="text" id="buyerName" placeholder="Your Name" value="${buyerName}" required>
+        <input type="text" id="buyerContact" placeholder="Contact Number" required>
+        <textarea id="buyerAddress" placeholder="Delivery Address" required></textarea>
+        <input type="number" id="buyerQuantity" placeholder="Quantity to Order" min="1" max="${product.qty}" required>
+        <div class="total-price">
+          Total Price: ₹<span id="totalPrice">0</span>
+        </div>
+        <button type="submit">Place Order</button>
+      </form>
+    `;
+
+    document.getElementById("buyerQuantity").addEventListener("input", function() {
+      const quantity = parseInt(this.value) || 0;
+      const totalPrice = product.price * quantity;
+      document.getElementById("totalPrice").textContent = totalPrice;
+    });
+
+    let orderData = {};
+
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      orderData = {
+        cropName:product.pname,
+        farmerName: product.fname,
+        buyerName: document.getElementById("buyerName").value,
+        contact: document.getElementById("buyerContact").value,
+        address: document.getElementById("buyerAddress").value,
+        quantity: document.getElementById("buyerQuantity").value,
+        totalPrice: document.getElementById("totalPrice").textContent,
+        status: "Paid"
+      };
+
+      // Show payment modal
+      document.getElementById("modalAmount").textContent = orderData.totalPrice;
+      document.getElementById("paymentModal").style.display = "flex";
+    });
+
+    function confirmPayment() {
+      // Save to farmer order
+      const farmerOrders = JSON.parse(localStorage.getItem(`orders_${orderData.farmerName}`) || "[]");
+      farmerOrders.push(orderData);
+      localStorage.setItem(`orders_${orderData.farmerName}`, JSON.stringify(farmerOrders));
+
+      // Save to buyer billing history
+      const buyerBill = JSON.parse(localStorage.getItem(`billing_${orderData.buyerName}`) || "[]");
+      buyerBill.push(orderData);
+      localStorage.setItem(`billing_${orderData.buyerName}`, JSON.stringify(buyerBill));
+      alert("✅ Payment successful! Order placed.");
+      document.getElementById("paymentModal").style.display = "none";
+      window.location.href = "buyer-dashboard.html";
+    }
+  </script>
+
+  <footer>
+    🌱 AgriSetu | Empowering Farmers & Connecting Communities © 2025
+    <button onclick="window.location.href='index.html'">🏠 Home</button>
+  </footer>
+</body>
+</html>

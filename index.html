@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AgriSetu - From Farm to Family</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0fdf4;
+      color: #1b4332;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: #2d6a4f;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: slideDown 1s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .logo i {
+      margin-right: 8px;
+    }
+
+    .header-buttons button {
+      margin-left: 10px;
+      padding: 12px 18px;
+      background: white;
+      color: #2d6a4f;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .header-buttons button:hover {
+      background: #b7e4c7;
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 80px 20px;
+      text-align: center;
+      background: url('https://images.pexels.com/photos/1719669/pexels-photo-1719669.jpeg?auto=compress&cs=tinysrgb&w=600') no-repeat center center/cover;
+      color: white;
+      animation: fadeIn 2s ease;
+    }
+
+    .hero h1, .hero p {
+      text-shadow: 1px 1px 3px #00000088;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      animation: slideUp 1s ease-in-out;
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      max-width: 600px;
+    }
+
+    .telugu { display: none; font-weight: 500; font-size: 1rem; margin-top: 5px; }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 60px auto;
+      max-width: 1000px;
+      gap: 20px;
+    }
+
+    .feature {
+      flex: 1 1 200px;
+      padding: 30px;
+      border-radius: 16px;
+      background: #d8f3dc;
+      text-align: center;
+      animation: slideUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .feature:nth-child(1) { animation-delay: 0.3s; }
+    .feature:nth-child(2) { animation-delay: 0.5s; }
+    .feature:nth-child(3) { animation-delay: 0.7s; }
+    .feature:nth-child(4) { animation-delay: 0.9s; }
+
+    .feature i {
+      font-size: 2.5rem;
+      color: #1b4332;
+      margin-bottom: 15px;
+      transition: color 0.3s ease;
+    }
+
+    .feature i:hover {
+      color: #52b788;
+    }
+
+    .feature h3 {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background: #40916c;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      border-top: 3px solid #1b4332;
+      animation: fadeIn 2s ease;
+    }
+
+    .lang-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #52b788;
+      border: none;
+      padding: 12px 20px;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: 0.3s ease;
+    }
+
+    .lang-btn:hover {
+      background: #40916c;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .features {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .feature {
+        flex: 1 1 80%;
+        margin: 0 auto;
+      }
+
+      .header-buttons button {
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <i class="fas fa-seedling"></i> AgriSetu
+    </div>
+    <div class="header-buttons">
+      <button onclick="window.location.href='farmer-login.html'">👨‍🌾 Farmer Login<a href="pages/farmer-login.html"></a></button>
+      <button onclick="window.location.href='buyer-login.html'">🛒 Buyer Login<a href="pages/buyer-login.html"></a></button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Connecting Farms to Families</h1>
+    <div class="telugu">రైతును వినియోగదారుడితో నేరుగా కలుపుతోంది 🌾</div>
+    <p>AgriSetu empowers farmers by giving them a direct platform to reach consumers — fresh, fair, and fast.</p>
+    <div class="telugu">తాజా, న్యాయమైన ధరలు, వేగవంతమైన డెలివరీ 🚚</div>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <i class="fas fa-tractor"></i>
+      <h3>Empower Farmers</h3>
+      <p>Support local growers and encourage sustainable practices.</p>
+      <div class="telugu">రైతులను సాధికారితం చేయండి 🙌</div>
+    </div>
+    <div class="feature">
+      <i class="fas fa-leaf"></i>
+      <h3>Fresh Produce</h3>
+      <p>Get naturally grown fruits and vegetables directly from the field.</p>
+      <div class="telugu">నేరుగా పొలాల నుండి తాజా ఉత్పత్తులు 🍅</div>
+    </div>
+    <div class="feature">
+      <i class="fas fa-hand-holding-usd"></i>
+      <h3>Fair Pricing</h3>
+      <p>No middlemen, just transparent and fair pricing.</p>
+      <div class="telugu">మధ్యవర్తులు లేని నేరుగా న్యాయ ధరలు 💰</div>
+    </div>
+    <div class="feature">
+      <i class="fas fa-globe-asia"></i>
+      <h3>Multi-language Support</h3>
+      <p>Available in English & Telugu to help all farmers easily connect.</p>
+      <div class="telugu">ఇంగ్లీష్ మరియు తెలుగు లో లభిస్తుంది 🌐</div>
+    </div>
+  </section>
+
+  <footer>
+    Made with ❤️ for Farmers | AgriSetu © 2025
+  </footer>
+
+  <button class="lang-btn" onclick="toggleLanguage()">🌐 Toggle Telugu</button>
+
+  <script>
+    let teluguEnabled = false;
+
+    function toggleLanguage() {
+      teluguEnabled = !teluguEnabled;
+      const teluguTexts = document.querySelectorAll('.telugu');
+      const toggleBtn = document.querySelector('.lang-btn');
+
+      teluguTexts.forEach(el => {
+        el.style.display = teluguEnabled ? 'block' : 'none';
+      });
+
+      toggleBtn.textContent = teluguEnabled ? "🌐 Toggle English" : "🌐 Toggle Telugu";
+    }
+
+    // Start with Telugu hidden
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll('.telugu').forEach(el => el.style.display = 'none');
+    });
+  </script>
+
+</body>
+</html>
